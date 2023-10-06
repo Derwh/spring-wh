@@ -7,10 +7,10 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 public class BeanFactoryTest {
 
     public static void main(String[] args) {
-
+        testGetBean();
     }
 
-    public void testGetBean() {
+    public static void testGetBean() {
         // 1.创建工厂对象
         DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 

@@ -3,7 +3,26 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="userService" class="org.example.service.impl.UserServiceImpl">
+    <!-- 知识点：1.由于id是唯一标识，所以不能有重复的
+                在获取bean时，getBean参数的name实际上就是这里的id，容器做了转换
+                如果不配置id，实际上也有默认的name（BeanFactory中singletonObjects Map中的key），默认的时该Bean的全限定名
+
+                2.name可以配置Bean的别名，即可以通过别名来获取，其中可以设置多个，如name="aaa,bbb"
+                 通过别名可以取到Bean的原因是，BeanFactory中有个aliasMap，其中存放了Bean别名和id之间的对应关系，map的key为别名，value为对应id
+                 如果存在别名但是没有配置id，那么singletonObjects map中的key将会是第一个别名
+
+                3.scope配置Bean的范围，singleton（单例，默认，Spring容器即ApplicationContext创建时即实例化Bean，每次getBean都是从单例池即singletonObjects中获取）
+                prototype（原型，当调用getBean时才会实例化Bean，每次创建的都是全新的）
+
+                4.lazy-init="true"配置懒加载，ApplicationContext是在容器创建时就实例化Bean，设置懒加载后即在getBean时才实例化
+                 和prototype的区别在于这个本质上还是会在单例池中创建单例对象
+                 该配置对BeanFactory无效
+
+                5.init-method、destroy-method 初始化Bean（对象创建之后即调用构造方法之后）和销毁Bean时调用的方法（显式close容器时才会被调用）
+                 当设置prototype的时候，destroy-method不会被调用，原因是非单例时，spring容器不会跟踪Bean的生命周期，所以即使显式关闭容器也不会销毁对象
+                 除了使用init-method外，还可以实现InitializingBean接口来实现Bean的初始化，需要重写其中的afterPropertiesSet方法（该方法的执行时机是在属性设置之后，也就是property标签设置属性后执行，在init-method之前执行） -->
+
+    <bean id="userService" name="aaa,bbb" class="org.example.service.impl.UserServiceImpl" init-method="init" destroy-method="destroy">
         <!-- 以子标签的方式注入依赖 name表示UserServiceImpl相关set方法中set后的名称，此处set方法为setUserDao ref表示此处beans.xml配置文件中的beanId -->
         <property name="userDao" ref="userDao"></property>
     </bean>

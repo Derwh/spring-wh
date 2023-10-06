@@ -8,8 +8,8 @@ public class ApplicationContextTest {
 
     public static void main(String[] args) {
         // 获取bean实例对象
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
         UserService userService = (UserService) applicationContext.getBean("userService");
-        System.out.println(userService);
+        applicationContext.close();
     }
 }

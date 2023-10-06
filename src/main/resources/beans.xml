@@ -3,6 +3,11 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="userService" class="org.example.service.impl.UserServiceImpl"></bean>
+    <bean id="userService" class="org.example.service.impl.UserServiceImpl">
+        <!-- 以子标签的方式注入依赖 name表示UserServiceImpl相关set方法中set后的名称，此处set方法为setUserDao ref表示此处beans.xml配置文件中的beanId -->
+        <property name="userDao" ref="userDao"></property>
+    </bean>
+
+    <bean id="userDao" class="org.example.dao.impl.UserDaoImpl"></bean>
 
 </beans>
